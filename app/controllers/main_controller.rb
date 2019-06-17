@@ -91,7 +91,7 @@ Aqui estão mais alguns dados complementares das últimas 24h para o senhor:
 
 <strong>Maior preço:</strong> R$#{(quotation.ticker.high).to_f.round(2)}
 <strong>Menor preço:</strong> R$#{(quotation.ticker.low).to_f.round(2)}
-<strong>Volume:</strong> R$#{(quotation.ticker.vol).to_f.round(2)}
+<strong>Volume:</strong> BTC #{(quotation.ticker.vol).to_f.round(2)}
 <strong>Preço de compra:</strong> R$#{(quotation.ticker.buy).to_f.round(2)}
 <strong>Preço de venda:</strong> R$#{(quotation.ticker.sell).to_f.round(2)}
         "
