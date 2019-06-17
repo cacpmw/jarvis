@@ -85,6 +85,7 @@ class MainController < ApplicationController
     response_text =
         "#{set_username} aqui está o resumo de operações executadas segundo
 <strong>Mercado Bitcoin</strong>:
+
 Valor atual: R$ #{(quotation.ticker.last).to_f.round(2)}
 
 Aqui estão mais alguns dados complementares das últimas 24h para o senhor:
