@@ -88,7 +88,7 @@ class MainController < ApplicationController
 
 Valor atual: R$ #{(quotation.ticker.last).to_f.round(2)}
 
-Tomei a liberdade de buscas mais alguns dados complementares das últimas 24h para o senhor:
+Tomei a liberdade de buscar mais alguns dados complementares das últimas 24h para o senhor:
 
 <strong>Maior preço:</strong> R$#{(quotation.ticker.high).to_f.round(2)}
 <strong>Menor preço:</strong> R$#{(quotation.ticker.low).to_f.round(2)}
