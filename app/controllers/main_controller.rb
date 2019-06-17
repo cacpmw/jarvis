@@ -83,7 +83,7 @@ class MainController < ApplicationController
     response = Faraday.get("https://www.mercadobitcoin.net/api/btc/ticker/")
     quotation = JSON.parse(response.body, object_class: OpenStruct)
     response_text =
-        " aqui está o resumo de operações executadas segundo
+        "#{set_username} aqui está o resumo de operações executadas segundo
 <strong>Mercado Bitcoin</strong>:
 Valor atual: R$ #{(quotation.ticker.last).to_f.round(2)}
 
