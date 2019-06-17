@@ -37,9 +37,9 @@ class MainController < ApplicationController
       send_message(get_help)
     elsif text.include?('/btc')
       get_btc_brl
-    elsif text.include?('/domain')
-      response = check_domain_availability(text.split('#'))
-      debugger
+    elsif text.include?('/conselho')
+      get_advice
+
     else
       puts 'unknown command'
       response = 'Não conheço este comando senhor'
@@ -62,6 +62,14 @@ class MainController < ApplicationController
     request.params[:message]["text"].to_s
   end
 
+  def get_advice
+    response = JSON.parse(Faraday.get("https://api.adviceslip.com/advice").body, object_class: OpenStruct)
+    text = "#{set_username} meu conselho para o senhor agora é este:
+\"#{response.slip.advice}\"
+    "
+    send_message(text)
+  end
+
   def get_usd_brl
     key = Rails.application.credentials.dig(:secret_apilayer_key)
     #Getting USDBRL quotation
@@ -70,12 +78,6 @@ class MainController < ApplicationController
     #Sending response to bot
     response_text = "#{set_username} o dolar está custando: R$" + (quotation['quotes']['USDBRL']).round(2).to_s
     send_message(response_text)
-  end
-
-  def check_domain_availability(domain)
-    key = Rails.application.credentials.dig(:jsonwhois_api_key)
-    response = Faraday.get("https://api.jsonwhois.io/availability?key=#{key}&domain=#{domain}")
-    response.body
   end
 
   def get_btc_brl
