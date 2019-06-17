@@ -37,6 +37,9 @@ class MainController < ApplicationController
       send_message(get_help)
     elsif text.include?('/btc')
       get_btc_brl
+    elsif text.include?('/domain')
+      response = check_domain_availability(text.split('#'))
+      debugger
     else
       puts 'unknown command'
       response = 'Não conheço este comando senhor'
@@ -69,13 +72,29 @@ class MainController < ApplicationController
     send_message(response_text)
   end
 
+  def check_domain_availability(domain)
+    key = Rails.application.credentials.dig(:jsonwhois_api_key)
+    response = Faraday.get("https://api.jsonwhois.io/availability?key=#{key}&domain=#{domain}")
+    response.body
+  end
+
   def get_btc_brl
-    key = Rails.application.credentials.dig(:cryptocompare_api_key)
-    #Getting BTCBRL quotation
-    response = Faraday.get("https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=BRL&api_key=#{key}")
-    quotation = ActiveSupport::JSON.decode(response.body)
-    #Sending response to bot
-    response_text = "#{set_username} o bitcoin está custando: R$" + (quotation["BRL"]).round(2).to_s
+
+    response = Faraday.get("https://www.mercadobitcoin.net/api/btc/ticker/")
+    quotation = JSON.parse(response.body, object_class: OpenStruct)
+    response_text =
+        " aqui está o resumo de operações executadas segundo
+<strong>Mercado Bitcoin</strong>:
+Valor atual: R$ #{(quotation.ticker.last).to_f.round(2)}
+
+Aqui estão mais alguns dados complementares das últimas 24h para o senhor:
+
+<strong>Maior preço:</strong> R$#{(quotation.ticker.high).to_f.round(2)}
+<strong>Menor preço:</strong> R$#{(quotation.ticker.low).to_f.round(2)}
+<strong>Volume:</strong> R$#{(quotation.ticker.vol).to_f.round(2)}
+<strong>Preço de compra:</strong> R$#{(quotation.ticker.buy).to_f.round(2)}
+<strong>Preço de venda:</strong> R$#{(quotation.ticker.sell).to_f.round(2)}
+        "
     send_message(response_text)
   end
 

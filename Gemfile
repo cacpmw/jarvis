@@ -13,7 +13,6 @@ gem 'puma', '~> 3.11'
 gem 'jbuilder', '~> 2.5'
 gem 'faraday'
 gem "sentry-raven"
-gem 'telegram_bot'
 gem 'rspotify'
 
 # Use Redis adapter to run Action Cable in production
